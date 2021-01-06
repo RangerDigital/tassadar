@@ -19,7 +19,3 @@ jobs:
 
       - name: Run Ansible Playbook
         run: ansible-playbook playbooks/delete.yml
-
-      - name: Setup Tmate session
-        uses: mxschmitt/action-tmate@v1
-        if: failure()

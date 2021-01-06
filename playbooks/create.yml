@@ -15,10 +15,14 @@
         state: present
       register: instance_data
 
-    - name: Add host to invetory.
+    - name: Add host to inventory.
       add_host:
         name: "{{ instance_data.ipv4_address }}"
         groups: servers
+
+    - name: Add host to inventory.
+      debug:
+        msg: "{{ instance_data }}"
 
 - name: Provision server with minecraft.
   hosts: servers

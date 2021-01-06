@@ -60,6 +60,7 @@
         path: /mnt/volume-tassadar
         src: /dev/disk/by-id/scsi-0HC_Volume_8819575
         opts: discard,defaults
+        fstype: ext4
         state: present
 
     - name: Start the server

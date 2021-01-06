@@ -24,7 +24,6 @@
       hetzner.hcloud.hcloud_volume:
         name: volume-tassadar
         server: tassadar
-        automount: yes
         state: present
 
     - name: Update DNS records.
@@ -50,6 +49,18 @@
         name: openjdk-11-jre-headless
         update_cache: yes
 
+    - name: Creates directory.
+      file:
+        path: /mnt/volume-tassadar
+        state: directory
+
+    - name: Mount volume.
+      mount:
+        path: /mnt/volume-tassadar
+        src: /dev/disk/by-id/scsi-0HC_Volume_8819575
+        opts: discard,defaults
+        state: present
+
     - name: Start the server
-      shell: "(cd /mnt/HC_Volume_8819575/minecraft/; bash ./start.sh >/dev/null 2>&1 &)"
+      shell: "(cd /mnt/volume-tassadar/minecraft/; bash ./start.sh >/dev/null 2>&1 &)"
       poll: 0

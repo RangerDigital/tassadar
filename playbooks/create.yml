@@ -39,6 +39,7 @@
 - name: Provision server with minecraft.
   hosts: servers
   remote_user: root
+  gather_facts: no
 
   tasks:
     - name: Wait for connection.

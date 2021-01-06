@@ -56,12 +56,7 @@
         state: directory
 
     - name: Mount volume.
-      mount:
-        path: /mnt/volume-tassadar
-        src: /dev/disk/by-id/scsi-0HC_Volume_8819575
-        opts: discard,defaults
-        fstype: ext4
-        state: present
+      command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar
 
     - name: Start the server
       shell: "(cd /mnt/volume-tassadar/minecraft/; bash ./start.sh >/dev/null 2>&1 &)"

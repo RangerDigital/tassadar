@@ -7,6 +7,6 @@
   tasks:
     - name: Ensure the server is removed.
       hetzner.hcloud.hcloud_server:
-        api_token: "{{ lookup('env', 'secret.HCLOUD_TOKEN') }}"
+        api_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
         name: tassadar
         state: absent

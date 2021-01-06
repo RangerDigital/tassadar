@@ -19,3 +19,5 @@ jobs:
 
       - name: Run Ansible Playbook
         run: ansible-playbook playbooks/delete.yml
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}

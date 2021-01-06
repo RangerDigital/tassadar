@@ -5,7 +5,8 @@
 
   tasks:
     - name: Create server with SSH key.
-      hcloud_server:
+      hetzner.hcloud.hcloud_server:
+        api_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
         name: tassadar
         server_type: cpx11
         image: ubuntu-20.04

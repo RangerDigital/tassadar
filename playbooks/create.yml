@@ -45,7 +45,7 @@
     - name: Wait for connection.
       wait_for_connection:
 
-    - name: Install Java
+    - name: Install Java.
       apt:
         name: openjdk-11-jre-headless
         update_cache: yes
@@ -56,8 +56,9 @@
         state: directory
 
     - name: Mount volume.
-      command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar
+      command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar 
 
-    - name: Start the server
-      shell: "(cd /mnt/volume-tassadar/minecraft/; bash ./start.sh >/dev/null 2>&1 &)"
-      poll: 0
+    - name: Start the server.
+      command: bash ./start.sh
+        chdir: /mnt/volume-tassadar/minecraft/
+

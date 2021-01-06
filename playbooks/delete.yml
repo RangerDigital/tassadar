@@ -6,8 +6,9 @@
   vars:
     hcloud_token: "{{ lookup('env', 'secret.HCLOUD_TOKEN' }}"
 
-- name: Ensure the server is removed.
-  hetzner.hcloud.hcloud_server:
-    api_token: "{{ hcloud_token }}"
-    name: tassadar
-    state: absent
+  tasks:
+    - name: Ensure the server is removed.
+      hetzner.hcloud.hcloud_server:
+        api_token: "{{ hcloud_token }}"
+        name: tassadar
+        state: absent

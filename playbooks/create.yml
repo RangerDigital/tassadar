@@ -34,7 +34,7 @@
         type: A
         value: "{{ instance_data.hcloud_server.ipv4_address }}"
         account_email: kuba07071999@gmail.com
-        account_api_key: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
+        api_token: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
       register: record
 
 - name: Provision server with minecraft.

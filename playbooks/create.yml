@@ -9,7 +9,7 @@
         name: tassadar
         server_type: cpx11
         image: ubuntu-20.04
-        location: fsn1
+        location: hel1
         ssh_keys:
           - Tassadar_Alpha
         state: present

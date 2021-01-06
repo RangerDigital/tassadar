@@ -1,7 +1,6 @@
 ---
 - name: Create new server.
-  hosts: local
-  remote_user: root
+  hosts: localhost
 
   tasks:
     - name: Create server with SSH key.

@@ -16,13 +16,16 @@
       register: instance_data
 
     - name: Add host to inventory.
-      debug:
-        msg: "{{ instance_data }}"
-
-    - name: Add host to inventory.
       add_host:
         name: "{{ instance_data.hcloud_server.ipv4_address }}"
         groups: servers
+
+    - name: Mount a existing volume.
+      hetzner.hcloud.hcloud_volume:
+        name: volume-tassadar
+        server: tassadar
+        automount: yes
+        state: present
 
 - name: Provision server with minecraft.
   hosts: servers
@@ -31,3 +34,8 @@
   tasks:
     - name: Wait for connection.
       wait_for_connection:
+
+    - name: Install Java
+      apt:
+        name: openjdk-11-jre-headless
+        update_cache: yes

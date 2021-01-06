@@ -1,9 +1,8 @@
 ---
 - name: Delete server instance.
   hosts: localhost
-  connection: local
+
   gather_facts: False
-  user: root
   vars:
     hcloud_token: "{{ lookup('env', 'secret.HCLOUD_TOKEN' }}"
 

@@ -11,6 +11,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: python -m pip install hcloud
+
       - name: Run Ansible Playbook
         run: ansible-playbook playbooks/delete.yml
 

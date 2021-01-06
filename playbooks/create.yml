@@ -52,4 +52,4 @@
 
     - name: Start the server
       shell: "(cd /mnt/volume-tassadar/minecarft; bash ./start.sh >/dev/null 2>&1 &)"
-        poll: 0
+      poll: 0

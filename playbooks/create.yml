@@ -16,13 +16,13 @@
       register: instance_data
 
     - name: Add host to inventory.
-      add_host:
-        name: "{{ instance_data.ipv4_address }}"
-        groups: servers
-
-    - name: Add host to inventory.
       debug:
         msg: "{{ instance_data }}"
+
+    - name: Add host to inventory.
+      add_host:
+        name: "{{ instance_data.hcloud_server.ipv4_address }}"
+        groups: servers
 
 - name: Provision server with minecraft.
   hosts: servers

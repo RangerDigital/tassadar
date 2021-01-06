@@ -3,12 +3,13 @@ name: Delete server instance.
 on:
   workflow_dispatch:
 
-
 jobs:
   greet:
     runs-on: ubuntu-latest
 
     steps:
-    # Runs a single command using the runners shell
-    - name: Send Greeting
-      run: echo "Hello"
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook playbooks/delete.yml

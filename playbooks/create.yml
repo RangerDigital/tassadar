@@ -51,5 +51,5 @@
         update_cache: yes
 
     - name: Start the server
-      shell: "(cd /mnt/volume-tassadar/minecarft; bash ./start.sh >/dev/null 2>&1 &)"
+      shell: "(cd /mnt/HC_Volume_8819575/minecraft/; bash ./start.sh >/dev/null 2>&1 &)"
       poll: 0

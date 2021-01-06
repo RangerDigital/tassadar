@@ -57,6 +57,7 @@
 
     - name: Mount volume.
       command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar
+      ignore_errors: yes
 
     - name: Start the server.
       command: bash ./start.sh

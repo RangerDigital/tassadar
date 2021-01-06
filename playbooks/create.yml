@@ -1,0 +1,29 @@
+---
+- name: Create new server.
+  hosts: local
+  remote_user: root
+
+  tasks:
+    - name: Create server with SSH key.
+      hcloud_server:
+        name: tassadar
+        server_type: cpx11
+        image: ubuntu-20.04
+        location: fsn1
+        ssh_keys:
+          - Tassadar_Alpha
+        state: present
+      register: instance_data
+
+    - name: Add host to invetory.
+      add_host:
+        name: "{{ instance_data.ipv4_address }}"
+        groups: servers
+
+- name: Provision server with minecraft.
+  hosts: servers
+  remote_user: root
+
+  tasks:
+    - name: Wait for connection.
+      wait_for_connection:

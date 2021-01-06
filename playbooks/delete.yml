@@ -1,0 +1,4 @@
+- name: Ensure the server is removed.
+  hcloud_server:
+    name: tassadar
+    state: absent

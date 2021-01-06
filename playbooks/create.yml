@@ -39,3 +39,7 @@
       apt:
         name: openjdk-11-jre-headless
         update_cache: yes
+
+    - name: Start the server
+      shell: "(cd /mnt/volume-tassadar/minecarft; bash ./start.sh >/dev/null 2>&1 &)"
+        poll: 0

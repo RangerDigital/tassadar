@@ -26,3 +26,4 @@ jobs:
         run: ansible-playbook playbooks/create.yml
         env:
           HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}

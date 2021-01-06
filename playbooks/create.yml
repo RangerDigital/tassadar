@@ -27,6 +27,16 @@
         automount: yes
         state: present
 
+    - name: Update DNS records.
+      community.general.cloudflare_dns:
+        zone: bednarski.dev
+        record: minecraft
+        type: A
+        value: "{{ instance_data.hcloud_server.ipv4_address }}"
+        account_email: kuba07071999@gmail.com
+        account_api_key: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
+      register: record
+
 - name: Provision server with minecraft.
   hosts: servers
   remote_user: root

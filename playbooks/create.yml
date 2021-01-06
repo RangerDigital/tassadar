@@ -56,9 +56,7 @@
         state: directory
 
     - name: Mount volume.
-      command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar 
+      command: mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_8819575 /mnt/volume-tassadar
 
     - name: Start the server.
-      command: bash ./start.sh
-        chdir: /mnt/volume-tassadar/minecraft/
-
+      command: cd /mnt/volume-tassadar/minecraft; bash ./start.sh

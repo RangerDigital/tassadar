@@ -1,14 +1,4 @@
 server {
-  listen 80;
-  server_name minecraft.bednarski.dev;
-
-  if ($host = minecraft.bednarski.dev) {
-    return 301 https://$host$request_uri;
-  }
-}
-
-
-server {
   listen 443 http2;
   server_name minecraft.bednarski.dev;
 

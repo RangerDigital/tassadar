@@ -123,4 +123,4 @@
         state: latest
 
     - name: Generate certificate for minecraft.bednarski.dev
-      shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n --redirect
+      shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n

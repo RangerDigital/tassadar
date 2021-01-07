@@ -1,5 +1,5 @@
 server {
-  listen :80;
+  listen 80;
   server_name minecraft.bednarski.dev;
 
   if ($host = minecraft.bednarski.dev) {
@@ -9,7 +9,7 @@ server {
 
 
 server {
-  listen :443 ssl http2;
+  listen 443 ssl http2;
   server_name minecraft.bednarski.dev;
 
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;

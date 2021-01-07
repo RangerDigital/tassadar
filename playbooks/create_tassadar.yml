@@ -117,5 +117,10 @@
         name: certbot
         state: latest
 
+    - name: Install CertBot-Nginx.
+      apt:
+        name: python-certbot-nginx
+        state: latest
+
     - name: Generate certificate for minecraft.bednarski.dev
       shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n --redirect

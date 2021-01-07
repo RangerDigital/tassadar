@@ -1,0 +1,20 @@
+---
+- name: Destroy Tassadar server instance.
+  hosts: localhost
+  vars:
+    hcloud_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
+
+  gather_facts: False
+
+  tasks:
+    - name: Ensure the Tassadar server is stopped.
+      hetzner.hcloud.hcloud_server:
+        api_token: "{{ hcloud_token }}"
+        name: tassadar
+        state: stopped
+
+    - name: Ensure the Tassadar server is removed.
+      hetzner.hcloud.hcloud_server:
+        api_token: "{{ hcloud_token }}"
+        name: tassadar
+        state: absent

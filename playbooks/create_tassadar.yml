@@ -1,0 +1,80 @@
+---
+- name: Create Tassadar server instance.
+  hosts: localhost
+  vars:
+    cloudflare_token: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
+    hcloud_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
+    hcloud_type: "cpx11"
+
+  tasks:
+    - name: Create a new instance with an SSH key.
+      hetzner.hcloud.hcloud_server:
+        api_token: "{{ hcloud_token }}"
+        name: tassadar
+        server_type: "{{ hcloud_type }}"
+        image: ubuntu-20.04
+        location: hel1
+        ssh_keys:
+          - Tassadar_Alpha
+        state: present
+      register: instance_data
+
+    - name: Add created host to inventory.
+      add_host:
+        name: "{{ instance_data.hcloud_server.ipv4_address }}"
+        groups: servers
+
+    - name: Mount volume to Tassadar server.
+      hetzner.hcloud.hcloud_volume:
+        api_token: "{{ hcloud_token }}"
+        name: volume-tassadar
+        server: tassadar
+        state: present
+
+    - name: Update CloudFlare DNS records.
+      community.general.cloudflare_dns:
+        zone: bednarski.dev
+        record: minecraft
+        type: A
+        value: "{{ instance_data.hcloud_server.ipv4_address }}"
+        account_email: kuba07071999@gmail.com
+        api_token: "{{ cloudflare_token }}"
+      register: record
+
+- name: Provision instance for Minecraft server.
+  hosts: servers
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+    - name: Wait for connection.
+      wait_for_connection:
+
+    - name: Install Java Headless.
+      apt:
+        name: openjdk-11-jre-headless
+        update_cache: yes
+
+    - name: Creates a volume directory.
+      file:
+        path: /mnt/volume-tassadar
+        state: directory
+
+    - name: Mount volume to Tassadar instance.
+      mount:
+        path: /mnt/volume-tassadar
+        src: /dev/disk/by-id/scsi-0HC_Volume_8819575
+        fstype: ext4
+        opts: discard,defaults
+        state: mounted
+
+    - name: Install minecraft.service template.
+      template:
+        src: ./templates/minecraft.service
+        dest: /etc/systemd/system/minecraft.service
+
+    - name: Make sure Minecraft service is running.
+      systemd:
+        name: minecraft
+        state: started
+        daemon_reload: yes

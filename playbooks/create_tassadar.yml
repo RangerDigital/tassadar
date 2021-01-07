@@ -78,3 +78,44 @@
         name: minecraft
         state: started
         daemon_reload: yes
+
+- name: Provision NGINX webserver.
+  hosts: servers
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+    - name: Wait for connection.
+      wait_for_connection:
+
+    - name: Install NGINX.
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Remove default NGINX site.
+      file:
+        name: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Copy site configuration.
+      copy:
+        src: ./templates/minecraft.bednarski.dev
+        dest: /etc/nginx/sites-enabled/minecraft.bednarski.dev
+        owner: root
+        group: root
+        mode: "644"
+
+    - name: Reload NGINX service is running.
+      systemd:
+        name: nginx
+        state: reloaded
+
+    - name: Install CertBot.
+      apt:
+        name: certbot
+        state: latest
+
+    - name: Generate certificate for minecraft.bednarski.dev
+      shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n --nginx-ctl "/usr/sbin/nginx" --redirect

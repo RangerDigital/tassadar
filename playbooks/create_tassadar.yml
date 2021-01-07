@@ -119,7 +119,7 @@
 
     - name: Install CertBot-Nginx.
       apt:
-        name: python-certbot-nginx
+        name: python3-certbot-nginx
         state: latest
 
     - name: Generate certificate for minecraft.bednarski.dev

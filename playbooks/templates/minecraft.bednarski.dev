@@ -1,5 +1,5 @@
 server {
-  listen 443 http2;
+  listen 80;
   server_name minecraft.bednarski.dev;
 
   server_tokens off;

@@ -1,3 +1,4 @@
+import logging
 import sentry_sdk
 from dotenv import load_dotenv
 import os
@@ -20,7 +21,6 @@ sentry_sdk.init(
     "https://863b3e8a8dfa405cbd9ad6fae453ab2d@o352799.ingest.sentry.io/5584050",
     traces_sample_rate=1.0
 )
-
 
 # Load configuration.
 load_dotenv()
@@ -56,14 +56,16 @@ async def watchdog():
         minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
 
         if minecraft_status.players.online == 0:
+            inactivity = datetime.timestamp(datetime.now()) - last_activity
+
             logging.info("No players logged in!")
-            logging.info("Time of Inactivity:", datetime.timestamp(datetime.now()) - last_activity)
+            logging.info(inactivity)
 
             # Change Bot activity!
             activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if (datetime.timestamp(datetime.now()) - last_activity) > 900:
+            if inactivity > 900:
 
                 logging.info("Watchdog: Destroying server!")
 
@@ -118,12 +120,11 @@ async def watchdog():
 
 @client.event
 async def on_ready():
-    logging.info("Started! Logged in as", client.user.name)
+    logging.info("Started! Bot is currently running!")
 
     watchdog.start()
 
 
-# /status - Sends current server status.
 @client.command()
 async def status(ctx):
     embed = discord.Embed(title=":crossed_swords:   Server Status", description="The current situation looks like this.\n", color=0xaaff34)

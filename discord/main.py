@@ -37,7 +37,7 @@ def is_online():
 last_activity = datetime.timestamp(datetime.now())
 
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=2)
 async def watchdog():
     global last_activity
 
@@ -45,6 +45,9 @@ async def watchdog():
         minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
 
         if minecraft_status.players.online == 0:
+            print("No players logged in!")
+            print("Time of Inactivity:", datetime.timestamp(datetime.now()) - last_activity)
+
             if (datetime.timestamp(datetime.now()) - last_activity) > 900:
 
                 channel = client.get_channel(WATCHDOG_CHANNEL)

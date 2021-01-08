@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 import requests
 from mcstatus import MinecraftServer
 
@@ -8,8 +10,13 @@ from discord.ext import tasks
 import asyncio
 from datetime import datetime
 
-import os
-from dotenv import load_dotenv
+#  Setup Sentry.
+import sentry_sdk
+sentry_sdk.init(
+    "https://863b3e8a8dfa405cbd9ad6fae453ab2d@o352799.ingest.sentry.io/5584050",
+    traces_sample_rate=1.0
+)
+
 
 # Load configuration.
 load_dotenv()

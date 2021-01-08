@@ -2,3 +2,4 @@ requests==2.22.0
 discord.py==1.5.1
 mcstatus==4.1.0
 python-dotenv==0.15.0
+sentry-sdk==0.19.5

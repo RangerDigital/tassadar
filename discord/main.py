@@ -66,7 +66,7 @@ async def watchdog():
             activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if inactivity > 100:
+            if inactivity > 900:
 
                 logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)
@@ -117,6 +117,7 @@ async def watchdog():
             activity = discord.Activity(name=f"{ minecraft_status.players.online } players play on the server!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
     else:
+        last_activity = datetime.timestamp(datetime.now())
         logging.info("Server offline! Passing...")
 
         # Change Bot activity!

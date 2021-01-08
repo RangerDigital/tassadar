@@ -16,6 +16,7 @@ load_dotenv()
 SERVER_HOSTNAME = os.getenv("SERVER_HOSTNAME")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+WATCHDOG_CHANNEL = os.getenv("WATCHDOG_CHANNEL")
 
 
 # Create bot client.
@@ -46,7 +47,7 @@ async def watchdog():
         if minecraft_status.players.online == 0:
             if (datetime.timestamp(datetime.now()) - last_activity) > 900:
 
-                channel = client.get_channel(796836485432344576)
+                channel = client.get_channel(WATCHDOG_CHANNEL)
                 embed = discord.Embed(title=":skull_crossbones:   Server Watchdog",
                                       description="Destroying the server after 15 minutes of inactivity!\n\nThis process can't be stopped now!\n", color=0xff344a)
                 embed.set_author(name="Minecraft Server Manager")

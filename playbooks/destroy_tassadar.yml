@@ -12,6 +12,7 @@
         api_token: "{{ hcloud_token }}"
         name: tassadar
         state: stopped
+      ignore_errors: yes
 
     - name: Ensure the Tassadar server is removed.
       hetzner.hcloud.hcloud_server:

@@ -27,7 +27,7 @@ load_dotenv()
 SERVER_HOSTNAME = os.getenv("SERVER_HOSTNAME")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-WATCHDOG_CHANNEL = os.getenv("WATCHDOG_CHANNEL")
+WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
 
 
 # Create bot client.
@@ -51,25 +51,26 @@ last_activity = datetime.timestamp(datetime.now())
 @tasks.loop(minutes=1)
 async def watchdog():
     global last_activity
+    logging.info("--------------------")
 
-    if is_online:
+    if is_online():
         minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
 
         if minecraft_status.players.online == 0:
             inactivity = datetime.timestamp(datetime.now()) - last_activity
 
             logging.info("No players logged in!")
-            logging.info(inactivity)
+            logging.info(round(inactivity))
 
             # Change Bot activity!
             activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if inactivity > 900:
+            if inactivity > 100:
 
-                logging.info("Watchdog: Destroying server!")
-
+                logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)
+
                 embed = discord.Embed(title=":skull_crossbones:   Server Watchdog",
                                       description="Destroying the server after 15 minutes of inactivity!\n\nThis process can't be stopped now!\n", color=0xff344a)
                 embed.set_author(name="Minecraft Server Manager")
@@ -104,17 +105,22 @@ async def watchdog():
                     else:
                         embed.set_field_at(0, name="Status", value="Destroyed")
                         await msg.add_reaction("☠")
+                        logging.info("Done!")
 
                     await msg.edit(embed=embed)
         else:
             last_activity = datetime.timestamp(datetime.now())
 
+            logging.info("Players online! Passing...")
+
             # Change Bot activity!
             activity = discord.Activity(name=f"{ minecraft_status.players.online } players play on the server!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
     else:
+        logging.info("Server offline! Passing...")
+
         # Change Bot activity!
-        activity = discord.Activity(name="for /mcstart command!", type=discord.ActivityType.listening)
+        activity = discord.Activity(name="/mcstart command!", type=discord.ActivityType.listening)
         await client.change_presence(activity=activity)
 
 
@@ -150,7 +156,7 @@ async def status(ctx):
 @client.command()
 async def start(ctx):
     async with ctx.channel.typing():
-        embed = discord.Embed(title=":cake:   Server Startup", description="The server is being provisioned right now. \n\nThis takes on average 2 minutes.\n", color=0xaaff34)
+        embed = discord.Embed(title=":cake:   Server Startup", description="The server is being provisioned right now. \n\nThis takes on average 3 minutes.\n", color=0xaaff34)
         embed.set_author(name="Minecraft Server Manager")
         embed.add_field(name="Status", value="Sending Request")
         embed.set_footer(text="This shouldn't take long!")

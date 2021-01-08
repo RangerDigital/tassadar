@@ -20,7 +20,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 # Create bot client.
 intents = discord.Intents.default()
-client = commands.Bot(command_prefix="/", intents=intents)
+client = commands.Bot(command_prefix="/mc", intents=intents)
 
 
 # Check if server is up.

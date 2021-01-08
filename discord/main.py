@@ -56,8 +56,8 @@ async def watchdog():
         minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
 
         if minecraft_status.players.online == 0:
-            print("No players logged in!")
-            print("Time of Inactivity:", datetime.timestamp(datetime.now()) - last_activity)
+            logging.info("No players logged in!")
+            logging.info("Time of Inactivity:", datetime.timestamp(datetime.now()) - last_activity)
 
             # Change Bot activity!
             activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
@@ -65,7 +65,7 @@ async def watchdog():
 
             if (datetime.timestamp(datetime.now()) - last_activity) > 900:
 
-                print("Watchdog: Destroying server!")
+                logging.info("Watchdog: Destroying server!")
 
                 channel = client.get_channel(WATCHDOG_CHANNEL)
                 embed = discord.Embed(title=":skull_crossbones:   Server Watchdog",
@@ -118,7 +118,7 @@ async def watchdog():
 
 @client.event
 async def on_ready():
-    print("Started! Logged in as", client.user.name)
+    logging.info("Started! Logged in as", client.user.name)
 
     watchdog.start()
 

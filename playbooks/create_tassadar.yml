@@ -1,6 +1,8 @@
 ---
 - name: Create Tassadar server instance.
   hosts: localhost
+  gather_facts: no
+
   vars:
     cloudflare_token: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
     hcloud_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
@@ -122,5 +124,18 @@
         name: python3-certbot-nginx
         state: latest
 
+    - name: Copy certificates from volume to server.
+      copy:
+        src: /mnt/volume-tassadar/letsencrypt/
+        dest: /etc/letsencrypt/
+        remote_src: yes
+      ignore_errors: yes
+
     - name: Generate certificate for minecraft.bednarski.dev
       shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n
+
+    - name: Backup certificates from server to volume.
+      copy:
+        src: /etc/letsencrypt/
+        dest: /mnt/volume-tassadar/letsencrypt/
+        remote_src: yes

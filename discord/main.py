@@ -66,13 +66,13 @@ async def watchdog():
             activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if inactivity > 900:
+            if inactivity > 2700:
 
                 logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)
 
                 embed = discord.Embed(title=":skull_crossbones:   Server Watchdog",
-                                      description="Destroying the server after 15 minutes of inactivity!\n\nThis process can't be stopped now!\n", color=0xff344a)
+                                      description="Destroying the server after 45 minutes of inactivity!\n\nThis process can't be stopped now!\n", color=0xff344a)
                 embed.set_author(name="Minecraft Server Manager")
                 embed.set_footer(text="As for {}".format(datetime.now().strftime("%H:%M, %m/%d/%Y")))
                 embed.add_field(name="Status", value="Sending Request")

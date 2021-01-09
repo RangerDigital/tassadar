@@ -141,11 +141,18 @@ async def status(ctx):
     async with ctx.channel.typing():
 
         if is_online():
-            minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
+            minecraft_server = MinecraftServer.lookup(SERVER_HOSTNAME)
+            minecraft_status = minecraft_server.status()
+            minecraft_query = minecraft_server.query()
 
             embed.add_field(name="Status", value="Online", inline=False)
             embed.add_field(name="Players", value=minecraft_status.players.online)
             embed.add_field(name="Ping", value="{} ms".format(round(minecraft_status.latency)))
+
+            embed.description += "\n**Players:**"
+
+            for player in minecraft_query.players.names:
+                embed.description += f"\n- {player}"
 
         else:
             embed.color = 0xff344a

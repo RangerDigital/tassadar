@@ -1,7 +1,6 @@
 import psutil
 import uvicorn
 from fastapi import FastAPI
-from mcstatus import MinecraftServer
 
 app = FastAPI()
 

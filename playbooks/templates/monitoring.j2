@@ -7,7 +7,7 @@ Type=simple
 WorkingDirectory=/monitoring
 ExecStart=uvicorn main:app --port 6969
 Restart=on-failure
-Environment=SERVER_RCON={{ lookup('ini', 'rcon.password type=properties file=server.properties') }}
+Environment=SERVER_RCON={{ lookup('ini', 'rcon.password type=properties file=/tmp/server.properties') }}
 
 [Install]
 WantedBy=multi-user.target

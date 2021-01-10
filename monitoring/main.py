@@ -1,6 +1,10 @@
+import os
+import re
 import psutil
 import uvicorn
 from fastapi import FastAPI
+from mcipc.rcon.je import Client
+
 
 app = FastAPI()
 
@@ -41,5 +45,23 @@ async def status():
         response["storage_used"] = volume.used
     except:
         pass
+
+    try:
+        with Client("127.0.0.1", 25575, passwd=os.getenv("SERVER_RCON")) as client:
+            response["server_players"] = client.list().online
+
+            spark = re.findall("\d+\.\d+", client.run("spark tps"))
+
+            response["server_tps_5s"] = spark[0]
+            response["server_tps_10s"] = spark[1]
+            response["server_tps_15m"] = spark[4]
+
+            response["server_tick_min"] = spark[5]
+            response["server_tick_med"] = spark[6]
+            response["server_tick_max"] = spark[7]
+
+            response["server_online"] = 1
+    except:
+        response["server_online"] = 0
 
     return response

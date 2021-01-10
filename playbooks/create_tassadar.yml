@@ -168,7 +168,7 @@
     - name: Retrieve remote server.properties file.
       fetch:
         src: /mnt/volume-tassadar/minecraft/server.properties
-        dest: ./
+        dest: ./playbooks/templates/
 
     - name: Install monitoring.service template.
       template:

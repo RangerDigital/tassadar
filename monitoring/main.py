@@ -48,20 +48,20 @@ async def status():
 
     try:
         with Client("127.0.0.1", 25575, passwd=os.getenv("SERVER_RCON")) as client:
-            response["server_players"] = float(client.list().online
+            response["server_players"] = float(client.list().online)
 
-            spark=re.findall("\d+\.\d+", client.run("spark tps"))
+            spark = re.findall("\d+\.\d+", client.run("spark tps"))
 
-            response["server_tps_5s"]=float(spark[0])
-            response["server_tps_10s"]=float(spark[1])
-            response["server_tps_15m"]=float(spark[4])
+            response["server_tps_5s"] = float(spark[0])
+            response["server_tps_10s"] = float(spark[1])
+            response["server_tps_15m"] = float(spark[4])
 
-            response["server_tick_min"]=float(spark[5])
-            response["server_tick_med"]=float(spark[6])
-            response["server_tick_max"]=float(spark[7])
+            response["server_tick_min"] = float(spark[5])
+            response["server_tick_med"] = float(spark[6])
+            response["server_tick_max"] = float(spark[7])
 
-            response["server_online"]=1
+            response["server_online"] = 1
     except:
-        response["server_online"]=0
+        response["server_online"] = 0
 
     return response

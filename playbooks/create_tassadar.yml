@@ -154,7 +154,7 @@
     - name: Copy monitoring script to remote.
       copy:
         src: ../monitoring
-        dest: /monitoring
+        dest: /
 
     - name: Install Pip.
       apt:

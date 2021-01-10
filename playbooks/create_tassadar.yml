@@ -168,7 +168,12 @@
     - name: Retrieve remote server.properties file.
       fetch:
         src: /mnt/volume-tassadar/minecraft/server.properties
-        dest: /tmp
+        dest: /tmp/server.properties
+        flat: yes
+
+    - name: Read RCON password.
+      set_fact:
+        rconPassword: {{ lookup('ini', 'rcon.password type=properties file=/tmp/server.properties') }} 
 
     - name: Install monitoring.service template.
       template:

@@ -165,6 +165,11 @@
       pip:
         requirements: /monitoring/requirements.txt
 
+    - name: Retrieve remote server.properties file.
+      fetch:
+        src: /mnt/volume-tassadar/minecraft/server.properties
+        dest: /tmp
+
     - name: Install monitoring.service template.
       template:
         src: ./templates/monitoring.j2

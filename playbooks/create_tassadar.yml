@@ -156,6 +156,11 @@
         src: ../monitoring
         dest: /monitoring
 
+    - name: Install Pip.
+      apt:
+        name: python3-pip
+        state: latest
+
     - name: Install specified python requirements.
       pip:
         requirements: /monitoring/requirements.txt

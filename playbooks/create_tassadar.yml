@@ -133,9 +133,40 @@
 
     - name: Generate certificate for minecraft.bednarski.dev
       shell: certbot --nginx -d 'minecraft.bednarski.dev' -m kuba07071999@gmail.com --agree-tos -n
+      ignore_errors: yes
 
     - name: Backup certificates from server to volume.
       copy:
         src: /etc/letsencrypt/
         dest: /mnt/volume-tassadar/letsencrypt/
         remote_src: yes
+      ignore_errors: yes
+
+- name: Provision monitoring script.
+  hosts: servers
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+    - name: Wait for connection.
+      wait_for_connection:
+
+    - name: Copy monitoring script to remote.
+      copy:
+        src: ../monitoring
+        dest: /monitoring
+
+    - name: Install specified python requirements.
+      pip:
+        requirements: /monitoring/requirements.txt
+
+    - name: Install monitoring.service template.
+      template:
+        src: ./templates/monitoring.service
+        dest: /etc/systemd/system/monitoring.service
+
+    - name: Make sure monitoring service is running.
+      systemd:
+        name: monitoring
+        state: started
+        daemon_reload: yes

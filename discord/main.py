@@ -29,6 +29,8 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
 
+# otk (ang. optimal to kill) mean time when is the best (the chepest) to kill server
+otk = 0
 
 # Create bot client.
 intents = discord.Intents.default()
@@ -57,24 +59,24 @@ async def watchdog():
         minecraft_status = MinecraftServer.lookup(SERVER_HOSTNAME).status()
 
         if minecraft_status.players.online == 0:
-            inactivity = datetime.timestamp(datetime.now()) - last_activity
 
             logging.info("No players logged in!")
-            logging.info(round(inactivity))
 
             # Change Bot activity!
-            activity = discord.Activity(name="for a player to join!", type=discord.ActivityType.watching)
+            activity = discord.Activity(
+                name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if inactivity > 2700:
+            if otk == datetime.now().minute:
 
                 logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)
 
                 embed = discord.Embed(title=":skull_crossbones:   Server Watchdog",
-                                      description="Destroying the server after 45 minutes of inactivity!\n\nThis process can't be stopped now!\n", color=0xff344a)
+                                      description="Destroying the server because no one is online!\n\nThis process can't be stopped now!\n", color=0xff344a)
                 embed.set_author(name="Minecraft Server Manager")
-                embed.set_footer(text="As for {}".format(datetime.now().strftime("%H:%M, %m/%d/%Y")))
+                embed.set_footer(text="As for {}".format(
+                    datetime.now().strftime("%H:%M, %m/%d/%Y")))
                 embed.add_field(name="Status", value="Sending Request")
 
                 msg = await channel.send(embed=embed)
@@ -85,10 +87,12 @@ async def watchdog():
                     "Authorization": f"token { GITHUB_TOKEN }",
                 }
 
-                req = requests.post("https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/destroy_tassadar.yml/dispatches", json={"ref": "master"}, headers=headers)
+                req = requests.post(
+                    "https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/destroy_tassadar.yml/dispatches", json={"ref": "master"}, headers=headers)
 
                 if req.status_code == 204:
-                    embed.set_field_at(0, name="Status", value="Destroying Server")
+                    embed.set_field_at(
+                        0, name="Status", value="Destroying Server")
                     await msg.add_reaction("🔥")
                     await msg.edit(embed=embed)
 
@@ -114,29 +118,32 @@ async def watchdog():
             logging.info("Players online! Passing...")
 
             # Change Bot activity!
-            activity = discord.Activity(name=f"{ minecraft_status.players.online } players play on the server!", type=discord.ActivityType.watching)
+            activity = discord.Activity(
+                name=f"{ minecraft_status.players.online } players play on the server!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
     else:
         last_activity = datetime.timestamp(datetime.now())
         logging.info("Server offline! Passing...")
 
         # Change Bot activity!
-        activity = discord.Activity(name="/mcstart command!", type=discord.ActivityType.listening)
+        activity = discord.Activity(
+            name="/mcstart command!", type=discord.ActivityType.listening)
         await client.change_presence(activity=activity)
 
 
 @client.event
 async def on_ready():
     logging.info("Started! Bot is currently running!")
-
     watchdog.start()
 
 
 @client.command()
 async def status(ctx):
-    embed = discord.Embed(title=":crossed_swords:   Server Status", description="The current situation looks like this.\n", color=0xaaff34)
+    embed = discord.Embed(title=":crossed_swords:   Server Status",
+                          description="The current situation looks like this.\n", color=0xaaff34)
     embed.set_author(name="Minecraft Server Manager")
-    embed.set_footer(text="As for {}".format(datetime.now().strftime("%H:%M, %m/%d/%Y")))
+    embed.set_footer(text="As for {}".format(
+        datetime.now().strftime("%H:%M, %m/%d/%Y")))
 
     async with ctx.channel.typing():
 
@@ -146,8 +153,10 @@ async def status(ctx):
             minecraft_query = minecraft_server.query()
 
             embed.add_field(name="Status", value="Online", inline=False)
-            embed.add_field(name="Players", value=minecraft_status.players.online)
-            embed.add_field(name="Ping", value="{} ms".format(round(minecraft_status.latency)))
+            embed.add_field(
+                name="Players", value=minecraft_status.players.online)
+            embed.add_field(name="Ping", value="{} ms".format(
+                round(minecraft_status.latency)))
 
             embed.description += "\n**Players:**"
 
@@ -160,11 +169,24 @@ async def status(ctx):
 
     await ctx.send(embed=embed)
 
+time = 0  # this var will hold minutes when server started
+
 
 @client.command()
 async def start(ctx):
+
+    global otk
+    otk = datetime.now().minute + 55
+    if otk >= 60:
+        otk -= 60
+
+    await ctx.send(f"Hello there!{datetime.now().minute}")
+    await ctx.send(test)
+
     async with ctx.channel.typing():
-        embed = discord.Embed(title=":cake:   Server Startup", description="The server is being provisioned right now. \n\nThis takes on average 3 minutes.\n", color=0xaaff34)
+
+        embed = discord.Embed(title=":cake:   Server Startup",
+                              description="The server is being provisioned right now. \n\nThis takes on average 3 minutes.\n", color=0xaaff34)
         embed.set_author(name="Minecraft Server Manager")
         embed.add_field(name="Status", value="Sending Request")
         embed.set_footer(text="This shouldn't take long!")
@@ -183,7 +205,8 @@ async def start(ctx):
         "Authorization": f"token { GITHUB_TOKEN }",
     }
 
-    req = requests.post("https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/create_tassadar.yml/dispatches", json={"ref": "master"}, headers=headers)
+    req = requests.post("https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/create_tassadar.yml/dispatches",
+                        json={"ref": "master"}, headers=headers)
 
     if req.status_code == 204:
         embed.set_field_at(0, name="Status", value="Provisioning Server")
@@ -210,7 +233,8 @@ async def start(ctx):
 @client.command()
 async def stop(ctx):
     async with ctx.channel.typing():
-        embed = discord.Embed(title=":skull_crossbones:   Server Shutdown", description="The server is being destroyed right now. \n", color=0xff344a)
+        embed = discord.Embed(title=":skull_crossbones:   Server Shutdown",
+                              description="The server is being destroyed right now. \n", color=0xff344a)
         embed.set_author(name="Minecraft Server Manager")
         embed.add_field(name="Status", value="Sending Request")
         embed.set_footer(text="Thanks for saving my money!")
@@ -231,7 +255,8 @@ async def stop(ctx):
         "Authorization": f"token { GITHUB_TOKEN }",
     }
 
-    req = requests.post("https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/destroy_tassadar.yml/dispatches", json={"ref": "master"}, headers=headers)
+    req = requests.post("https://api.github.com/repos/RangerDigital/tassadar/actions/workflows/destroy_tassadar.yml/dispatches",
+                        json={"ref": "master"}, headers=headers)
 
     if req.status_code == 204:
         embed.set_field_at(0, name="Status", value="Destroying Server")

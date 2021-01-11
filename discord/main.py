@@ -25,7 +25,7 @@ load_dotenv()
 SERVER_HOSTNAME = os.getenv("SERVER_HOSTNAME")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-# WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
+WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
 
 # otk (ang. optimal to kill) mean time when is the best (the chepest) to kill server
 otk = 0

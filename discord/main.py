@@ -176,12 +176,13 @@ time = 0  # this var will hold minutes when server started
 async def start(ctx):
 
     global otk
+    logging.info("Set otk as global variable to loop can see it")
+
     otk = datetime.now().minute + 55
+    logging.info("Set new otk variable")
     if otk >= 60:
         otk -= 60
-
-    await ctx.send(f"Hello there!{datetime.now().minute}")
-    await ctx.send(test)
+        logging.info("Recalculated otk")
 
     async with ctx.channel.typing():
 

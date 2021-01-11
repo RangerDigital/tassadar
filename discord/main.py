@@ -67,7 +67,7 @@ async def watchdog():
                 name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if otk == datetime.now().minute:
+            if otk >= datetime.now().minute:
 
                 logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)

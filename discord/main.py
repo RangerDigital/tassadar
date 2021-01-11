@@ -5,7 +5,6 @@ import os
 import requests
 from mcstatus import MinecraftServer
 
-
 import discord
 from discord.ext import commands
 from discord.ext import tasks
@@ -13,7 +12,6 @@ from discord.ext import tasks
 import asyncio
 from datetime import datetime
 
-import logging
 logging.basicConfig(level=logging.INFO)
 
 #  Setup Sentry.
@@ -27,7 +25,7 @@ load_dotenv()
 SERVER_HOSTNAME = os.getenv("SERVER_HOSTNAME")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
+# WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
 
 # otk (ang. optimal to kill) mean time when is the best (the chepest) to kill server
 otk = 0

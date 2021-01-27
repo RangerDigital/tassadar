@@ -12,6 +12,8 @@ from discord.ext import tasks
 import asyncio
 from datetime import datetime
 
+import logging
+
 logging.basicConfig(level=logging.INFO)
 
 #  Setup Sentry.
@@ -29,6 +31,7 @@ WATCHDOG_CHANNEL = int(os.getenv("WATCHDOG_CHANNEL"))
 
 # otk (ang. optimal to kill) mean time when is the best (the chepest) to kill server
 otk = 0
+lastUsed = -1
 
 # Create bot client.
 intents = discord.Intents.default()
@@ -65,7 +68,14 @@ async def watchdog():
                 name="for a player to join!", type=discord.ActivityType.watching)
             await client.change_presence(activity=activity)
 
-            if otk >= datetime.now().minute:
+            if minecraft_status.players.online > 0:
+                lastUsed = datetime.now().hour * 60 + datetime.now().minute
+
+            # stbk (ang. save to be killed) return true if inactive since45 mins of more
+            stbk = lastUsed <= (datetime.now().hour*60 +
+                                datetime.now().minute + 45)
+
+            if otk >= datetime.now().minute and stbk:
 
                 logging.info("Destroying server!")
                 channel = client.get_channel(WATCHDOG_CHANNEL)
@@ -167,14 +177,17 @@ async def status(ctx):
 
     await ctx.send(embed=embed)
 
-time = 0  # this var will hold minutes when server started
-
 
 @client.command()
 async def start(ctx):
 
     global otk
+    global lastUsed
+
     logging.info("Set otk as global variable to loop can see it")
+
+    lastUsed = datetime.now().hour * 60 + datetime.now().minute  # HHMM of now()
+    logging.info("Set last use to now")
 
     otk = datetime.now().minute + 55
     logging.info("Set new otk variable")

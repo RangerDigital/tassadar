@@ -196,14 +196,14 @@ async def start(ctx):
         logging.info("Recalculated otk")
 
     async with ctx.channel.typing():
+        embed = discord.Embed(title=":cake:   Server Startup", description="The server is being provisioned right now. \n\nThis takes on average 3 minutes.\n", color=0xffb534)
 
-        embed = discord.Embed(title=":cake:   Server Startup",
-                              description="The server is being provisioned right now. \n\nThis takes on average 3 minutes.\n", color=0xaaff34)
         embed.set_author(name="Minecraft Server Manager")
         embed.add_field(name="Status", value="Sending Request")
         embed.set_footer(text="This shouldn't take long!")
 
         if is_online():
+            embed.color = 0xaaff34
             embed.set_field_at(0, name="Status", value="Already Running")
             msg = await ctx.send(embed=embed)
             await msg.add_reaction("🍰")
@@ -236,6 +236,7 @@ async def start(ctx):
             await msg.add_reaction("❌")
 
         else:
+            embed.color = 0xaaff34
             embed.set_field_at(0, name="Status", value="Success")
             await msg.add_reaction("🍰")
 

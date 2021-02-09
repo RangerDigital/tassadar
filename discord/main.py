@@ -192,12 +192,12 @@ async def start(ctx):
         await msg.edit(embed=embed)
 
     timeout = 0
-    while is_online() == False or timeout > 300:
+    while is_online() == False or timeout > 400:
         timeout += 1
         await asyncio.sleep(1)
 
     else:
-        if timeout > 300:
+        if timeout == 400:
             embed.set_field_at(0, name="Status", value="Failure")
             await msg.add_reaction("❌")
 

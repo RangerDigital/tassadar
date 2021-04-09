@@ -22,10 +22,6 @@ jobs:
         
       - name: Install dependencies
         run: sudo pip install python-dateutil hcloud 
-        
-      - name: Install dependencies
-        run: sudo pip search python-dateutil
-
 
 
       - name: Set up SSH-Agent

@@ -13,6 +13,15 @@ jobs:
 
       - name: Install dependencies
         run: pip install python-dateutil hcloud 
+      
+      - name: Install dependencies
+        run: pip3 install python-dateutil hcloud 
+        
+      - name: Install dependencies
+        run: sudo pip install python-dateutil hcloud 
+        
+      - name: Install dependencies
+        run: sudo python3 -m pip install python-dateutil
 
       - name: Install Ansible Galaxy collections
         run:  ansible-galaxy collection install hetzner.hcloud community.general

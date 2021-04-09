@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Install Ansible Galaxy collections
+        run:  ansible-galaxy collection install hetzner.hcloud community.general
 
       - name: Install dependencies
         run: pip install python-dateutil hcloud 
@@ -21,10 +24,9 @@ jobs:
         run: sudo pip install python-dateutil hcloud 
         
       - name: Install dependencies
-        run: sudo python3 -m pip install python-dateutil
+        run: sudo pip search python-dateutil
 
-      - name: Install Ansible Galaxy collections
-        run:  ansible-galaxy collection install hetzner.hcloud community.general
+
 
       - name: Set up SSH-Agent
         uses: webfactory/ssh-agent@v0.4.1

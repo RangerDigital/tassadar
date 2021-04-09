@@ -13,21 +13,13 @@ jobs:
         
       - name: Install Ansible Galaxy collections
         run:  ansible-galaxy collection install hetzner.hcloud community.general
-
-      - name: Install dependencies
-        run: pip install python-dateutil hcloud 
-      
+ 
       - name: Install dependencies
         run: pip3 install python-dateutil hcloud 
         
       - name: Install dependencies
         run: pip3 install --upgrade ansible
         
-      - name: Install dependencies
-        run: ansible --version | grep "python version"
-
-
-
       - name: Set up SSH-Agent
         uses: webfactory/ssh-agent@v0.4.1
         with:

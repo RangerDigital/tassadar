@@ -19,9 +19,9 @@ Friends of mine can request a server using a self-hosted Discord bot.
 
 It then triggers GitHub Action workflow running Ansible playbook against Hetzner cloud.
 
-Playbook rents a VPS, updates DNS entry for minecraft.bednarski.dev and configures Minecraft server with Nginx reverse proxy and custom monitoring endpoint.
+Playbook rents a VPS, updates DNS entry for minecraft.bednarski.dev, configures Minecraft server with Nginx reverse proxy and custom monitoring endpoint.
 
-For world persisnce I am using Hetzner block volume.
+For world persistence, I am using Hetzner block volume.
 
 <br>
 

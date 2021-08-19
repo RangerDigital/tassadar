@@ -48,7 +48,7 @@ def is_online():
 last_activity = datetime.timestamp(datetime.now())
 
 
-@tasks.loop(minutes=1)
+@tasks.loop(minutes=3)
 async def watchdog():
     global last_activity
     logging.info("--------------------")
